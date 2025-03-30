@@ -5,6 +5,7 @@ const MAX_PROGRESS_VALUE = 100;
 
 function ProgressBar() {
   const [val, setVal] = useState<number>(0);
+  const [isStartable, setIsStartable] = useState<boolean>(false);
   const progressIntervalId = useRef<number | null>(null);
 
   const onStopProgressBar = useCallback(() => {
@@ -12,6 +13,7 @@ function ProgressBar() {
     if (intervalId) {
       clearInterval(intervalId);
       progressIntervalId.current = null;
+      setIsStartable(true);
     }
   }, []);
 
@@ -26,6 +28,7 @@ function ProgressBar() {
       });
     }, 100);
     progressIntervalId.current = intervalId;
+    setIsStartable(false);
   }, []);
 
   useEffect(() => {
@@ -40,10 +43,10 @@ function ProgressBar() {
     <div className='progressbar-container'>
       <progress style={{ width: '100%' }} max={MAX_PROGRESS_VALUE} value={val} />
       <span>{val}%</span>
-      <button type='button' onClick={onStartProgressBar}>
+      <button type='button' onClick={onStartProgressBar} disabled={!isStartable}>
         Start
       </button>
-      <button type='button' onClick={onStopProgressBar}>
+      <button type='button' onClick={onStopProgressBar} disabled={isStartable}>
         Stop
       </button>
     </div>
