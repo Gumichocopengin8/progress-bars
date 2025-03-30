@@ -1,0 +1,5 @@
+.progressbar-container {
+  display: grid;
+  grid-template-columns: auto 24px 100px 100px;
+  gap: 0.5rem;
+}
